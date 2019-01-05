@@ -83,8 +83,8 @@
     function isReady() {
         var ready = true;
         for(var k in resourceCache) {
-            if(resourceCache.hasOwnProperty(k) &&
-               !resourceCache[k]) {
+            if(resourceCache.hasOwnProperty(k) && //hasOwnProperty test for property's existance
+               !resourceCache[k]) { // if there is the property in Cache and it is false, means not ready.
                 ready = false;
             }
         }
