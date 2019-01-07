@@ -1,3 +1,18 @@
+// initiallize
+
+var totalScore = 0;
+var totalLife = 5;
+
+var selectedPlayer = 'images/char-boy.png';
+var characters = [
+      'images/char-boy.png',
+      'images/char-cat-girl.png',
+      'images/char-horn-girl.png',
+      'images/char-pink-girl.png',
+      'images/char-princess-girl.png'
+    ];
+var charIndex = 0;
+
 // Enemies our player must avoid
 class Enemy{
   constructor(x,y,speed){
@@ -31,8 +46,6 @@ for(var y in enemyYaxis){
 }
 
 // Now write your own player class
-// todo: select own character among these given characters
-var selectedPlayer = 'images/char-boy.png';
 class Player{
   constructor(selectedPlayer){
     this.x = 202;
@@ -71,9 +84,27 @@ class Player{
   };
 }
 // Place the player object in a variable called player
+function playerSelect(){
+    charIndex ++;
+    if(charIndex >= characters.length){
+      charIndex = 0;
+    }
+    selectedPlayer = characters[charIndex];
+    return selectedPlayer;
+}
+
 var player = new Player(selectedPlayer);
-
-
+var charChoose = document.querySelector('.charChoose');
+charChoose.onmouseover = function() {
+  document.getElementById('popup').style.display = 'block';
+}
+charChoose.onmouseout = function() {
+  document.getElementById('popup').style.display = 'none';
+}
+charChoose.addEventListener('click',function(){
+  playerSelect();
+  player.character = selectedPlayer;
+});
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
