@@ -1,8 +1,5 @@
 // initiallize
 
-var totalScore = 0;
-var totalLife = 5;
-
 var selectedPlayer = 'images/char-boy.png';
 var characters = [
       'images/char-boy.png',
@@ -12,6 +9,12 @@ var characters = [
       'images/char-princess-girl.png'
     ];
 var charIndex = 0;
+
+var xAxis = [0,101,202,303,404];
+var yAxis = [63,146,229];
+
+var collectible;
+var allEnemies = [];
 
 // Enemies our player must avoid
 class Enemy{
@@ -25,7 +28,7 @@ class Enemy{
   update(dt){
     if(this.x > 505){// when off canvas
       this.x = -200; // offset to the origin
-      //todo: speed increasing as score get higher
+      this.y = yAxis[(yAxis.indexOf(this.y)+2)%3];
       this.speed = Math.floor(Math.random()*200 + 150); // randomly set speed between 150 - 350;
     }
     this.x += this.speed * dt;
@@ -37,12 +40,14 @@ class Enemy{
 }
 
 // Place all enemy objects in an array called allEnemies
-var allEnemies = [];
-var enemyYaxis = [63,146,229];
-for(var y in enemyYaxis){
-  var iniSpeed = Math.floor(Math.random()*200 + 150);
-  var enemy = new Enemy(0,enemyYaxis[y],iniSpeed);
-  allEnemies.push(enemy);
+function callEnemies(){
+  for(var y in yAxis){
+    var iniSpeed = Math.floor(Math.random()*200 + 150);
+    var enemy = new Enemy(0,yAxis[y],iniSpeed);
+    allEnemies.push(enemy);
+  }
+  var enemy2 = new Enemy(0,yAxis[Math.floor(Math.random()*yAxis.length)],iniSpeed);
+  allEnemies.push(enemy2);
 }
 
 // Now write your own player class
@@ -51,15 +56,15 @@ class Player{
     this.x = 202;
     this.y = 395;
     this.character = selectedPlayer;
+    this.score = 0;
+    this.life = 1;
   };
 
   update(){
-    if(this.y == -20){//when reach the water
-      setTimeout(()=>{
-        this.x = 202;
-        this.y = 395;
-      }, 500);
-    };
+    var e = document.querySelector('#scoreNum');
+    e.innerText = this.score;
+    var el = document.querySelector('#lifeNum');
+    el.innerText = this.life;
   }
 
   render(){
@@ -79,8 +84,19 @@ class Player{
         break;
       case 'down':
         this.y = this.y >= 395 ? 395: this.y+83;
+        if(this.y >= 229){ // once step into the stone, can't go back to the grass
+          this.y = 229;
+        }
         break;
     }
+    if(this.y == -20){//when reach the water
+      this.life++;
+      this.score += 10;
+      setTimeout(()=>{
+        this.x = 202;
+        this.y = 395;
+      }, 500);
+    };
   };
 }
 // Place the player object in a variable called player
@@ -116,4 +132,45 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+});
+
+class Collectible{
+  constructor(x,y,index){
+    this.x = x;
+    this.y = y;
+    this.gem = [
+      'images/Gem Blue.png',
+      'images/Gem Green.png',
+      'images/Gem Orange.png',
+      'images/Heart.png'
+    ];
+    this.index = this.gem[index];
+  }
+
+  render(){
+    ctx.drawImage(Resources.get(this.index), this.x, this.y);
+  }
+}
+
+
+function gemProduce(){
+  var randomX = xAxis[Math.floor(Math.random() * xAxis.length)];
+  var randomY = yAxis[Math.floor(Math.random() * yAxis.length)];
+  var randomGem = Math.floor(Math.random()*4);
+  collectible = new Collectible(randomX,randomY,randomGem);
+
+}
+callEnemies();
+gemProduce();
+
+var e = document.querySelector('#restart');
+e.addEventListener('click',function(){
+  document.querySelector('.info').style.display = 'flex';
+  document.querySelector('.over').style.display = 'none';
+  player.score = 0;
+  player.life = 1;
+  player.x = 202;
+  player.y = 395;
+  Engine;
+  callEnemies();
 });

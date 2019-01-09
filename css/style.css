@@ -3,7 +3,7 @@ body {
     font-family: fantasy;
 }
 
-.info{
+.info, .over{
   padding-top: 1em;
   width: 505px;
   position: relative;
@@ -11,9 +11,10 @@ body {
   text-align: center;
   display: flex;
   flex-wrap: wrap;
+  height : 76px;
 }
 
-.score, .live{
+.score, .life{
   font-size: 1em;
   font-weight: bold;
   width:42.5%;
@@ -36,4 +37,8 @@ body {
   font-family: fantasy;
   color: #595959;
   font-weight: bold;
+}
+
+.over{
+  display: none;
 }

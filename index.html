@@ -9,16 +9,21 @@
 
     <div class = "info">
       <div class = "score">
-        SCORE : 0
+        SCORE : <span id="scoreNum"></span>
       </div>
       <button class = 'charChoose'>
         <span id='popup'>
           Change Character
         </span>
       </button>
-      <div class = "live">
-        LIVE : 5
+      <div class = "life">
+        LIFE : <span id="lifeNum"></span>
       </div>
+    </div>
+
+    <div class="over">
+      <h2> GAME OVER! </h2>
+      <button id="restart"> Restart </button>
     </div>
 
     <script src="js/resources.js"></script>

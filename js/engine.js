@@ -24,7 +24,7 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = 505;
+    canvas.width = 606;
     canvas.height = 606;
     doc.body.appendChild(canvas); // create a canvas
 
@@ -79,6 +79,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
+        checkCollections();
         checkCollisions();
     }
 
@@ -88,8 +89,34 @@ var Engine = (function(global) {
             && enemy.y < (player.y +40) && enemy.y > (player.y - 40)){
           player.x = 202;
           player.y = 395;
+          player.life--;
+          player.score -=20;
+          if(player.life <= 0 || player.score < 0){
+            gameOver();
+          }
         }
       });
+    }
+
+    function checkCollections(){
+
+      if(collectible.x < (player.x + 50) && collectible.x > (player.x - 50)
+          && collectible.y < (player.y +40) && collectible.y > (player.y - 40)){
+            if(collectible.index == collectible.gem[3]){
+              player.life++;
+            }else{
+              player.score = player.score+10;
+            }
+            gemProduce();
+      }
+    }
+
+    function gameOver(){
+      document.querySelector('.info').style.display = 'none';
+      document.querySelector('.over').style.display = 'block';
+      reset();
+      allEnemies=[];
+      collectible;
     }
 
     /* This is called by the update function and loops through all of the
@@ -99,11 +126,20 @@ var Engine = (function(global) {
      * the data/properties related to the object. Do your drawing in your
      * render methods.
      */
+  //  var randomEnemies = [];
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
-        });
-        player.update();
+      // var i = 0;
+      // while( i <= 3){
+      //   var randomIndex  = Math.floor(Math.random()*allEnemies.length);
+      //   var enemy = allEnemies[randomIndex];
+      //   enemy.update(dt);
+      //   randomEnemies.push(enemy);
+      //   i++;
+      // }
+      allEnemies.forEach(function(enemy){
+        enemy.update(dt);
+      });
+      player.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -125,7 +161,7 @@ var Engine = (function(global) {
                 'images/grass-block.png'    // Row 2 of 2 of grass
             ],
             numRows = 6,
-            numCols = 5,
+            numCols = 6,
             row, col;
 
         // Before drawing, clear existing canvas
@@ -165,6 +201,7 @@ var Engine = (function(global) {
         });
 
         player.render();
+        collectible.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -172,7 +209,8 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+      player.score = 0;
+      player.life = 1;
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -189,7 +227,11 @@ var Engine = (function(global) {
         'images/char-horn-girl.png',
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
-        'images/Star.png'
+        'images/Star.png',
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png',
+        'images/Heart.png'
     ]);
     Resources.onReady(init);
 

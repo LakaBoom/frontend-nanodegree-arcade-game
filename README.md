@@ -3,6 +3,29 @@
 ## Table of Contents
 
 - [Instructions](#instructions)
+  Functionality
+
+  In this game, users can change the character that they love. The goal of the player is to reach the water, without colliding into one of the enemies, and collect as many as collectibles to get a higher score. The player has initially one life and zero score.
+  There are 3 kinds of gems, green, blue and orange as well as heart gem. If the player collect diamonds, the score will add 10, if get the heart, the life will add 1. In addition, if the player successfully reach the water, the score will add 20 and  will get another life.
+
+  Goal of the game:
+    1. Without colliding into one of the enemies.
+    2. Collect as many as collectibles to get higher score.
+    3. Collect as many as heart get more lives.
+
+  Collision happens:
+    1. Scores decrease 20.
+    2. Life decrease 1.
+
+  Game over condition:
+    1. When there is no more life, game over.
+    2. When the player's score is negative, game over.
+
+  Notice:
+  once player step into stone area, cannot go back to grass area.
+
+
+
 - [Contributing](#contributing)
 
 ## Instructions
