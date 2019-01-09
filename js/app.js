@@ -77,7 +77,7 @@ class Player{
         this.x = this.x <= 0 ? 0: this.x-101 ;
         break;
       case 'right':
-        this.x = this.x >= 404 ? 404: this.x+101;
+        this.x = this.x >= 505 ? 505: this.x+101;
         break;
       case 'up':
         this.y = this.y <= -20 ? -20: this.y-83;
